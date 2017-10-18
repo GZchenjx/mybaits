@@ -1,0 +1,26 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jx.dao.UserDAO">
+
+
+    <select id="queryById" resultMap="resultUserMap">
+        select u.id as t_id, u.name as u_name,u.mobile as u_mobile,
+        p.id as p_id,p.title as p_title,p.content as p_content
+        from t_user u,t_post p
+        where p.user_id = u.id and u.id=#{id}
+
+    </select>
+
+    <resultMap id="resultUserMap" type="com.jx.bean.User">
+        <result property="id" column="u_id"/>
+        <result property="name" column="u_name"/>
+        <result property="mobile" column="u_mobile"/>
+        <collection property="post" javaType="list" ofType="com.jx.bean.Post">
+            <id property="id" column="p_id"/>
+            <result property="title" column="p_title"/>
+            <result property="content" column="p_content"/>
+        </collection>
+    </resultMap>
+</mapper>

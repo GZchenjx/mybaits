@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jx.dao.PersonDAO">
+
+    <resultMap type="person" id="personMap">
+        <id property="id" column="p_id"/>
+        <result property="personName" column="p_name"/>
+        <result property="address" column="p_address"/>
+        <result property="phone" column="p_phone"/>
+
+        <!-- 一对多的关系 -->
+        <!-- property: 指的是集合属性的值, ofType：指的是集合中元素的类型 -->
+        <collection property="orderList" javaType="list" ofType="com.jx.bean.Order">
+            <id property="id" column="o_id"/>
+            <result property="number" column="o_number"/>
+            <result property="price" column="o_price"/>
+        </collection>
+    </resultMap>
+    <select id="querById" resultMap="personMap">
+        select p.id as p_id,p.personName as p_name,p.address as p_address,p.phone as p_phone,
+        o.id as o_id,o.number as o_number,o.price as o_price
+         from t_person p ,t_order o where
+        o.person_id = p.id and p.id = #{id}
+    </select>
+</mapper>
